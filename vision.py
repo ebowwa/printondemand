@@ -34,7 +34,7 @@ if __name__ == "__main__":
             return file.read().strip()
 
     def main():
-        image_path = 'response/ff8c257a-7bd7-419d-9cf1-52f1989aeea1.png'
+        image_path = 'response/5bdf859e-ea13-4806-b807-174b7f34f9a3.png'
         prompt = read_prompt_from_markdown('_prompts/extract_product_details.md')
 
         try:
