@@ -1,29 +1,38 @@
-
+# Adjusted WebpToPngConverter class with UUID integration for unique naming
 from PIL import Image
 import os
+import uuid
 
-def convert_webp_to_png(source_path, target_path):
-    '''
-    Converts a WEBP image to PNG format.
+class WebpToPngConverter:
+    def __init__(self, source_directory, target_directory):
+        '''
+        Initializes the converter with source and target directories.
+        '''
+        self.source_directory = source_directory
+        self.target_directory = target_directory
+        os.makedirs(self.target_directory, exist_ok=True)
 
-    Parameters:
-    - source_path: The path to the source WEBP image.
-    - target_path: The path to save the converted PNG image.
-    '''
-    with Image.open(source_path) as img:
-        img.save(target_path, 'PNG')
+    def convert_webp_to_png(self, source_path, target_path):
+        '''
+        Converts a WEBP image to PNG format.
+        '''
+        with Image.open(source_path) as img:
+            img.save(target_path, 'PNG')
 
-def main():
-    source_directory = 'unzipped_content/discord_Midjorneyv6'  # Directory where the .webp images are located
-    target_directory = 'png_images'  # Directory to save the .png images
-    os.makedirs(target_directory, exist_ok=True)
-
-    for webp_file in os.listdir(source_directory):
-        if webp_file.endswith('.webp'):
-            source_file_path = os.path.join(source_directory, webp_file)
-            target_file_path = os.path.join(target_directory, webp_file.rsplit('.', 1)[0] + '.png')
-            convert_webp_to_png(source_file_path, target_file_path)
-            print(f'Converted {webp_file} to PNG format.')
-
-if __name__ == '__main__':
-    main()
+    def convert_all(self):
+        conversion_details = []
+        for webp_file in os.listdir(self.source_directory):
+            if webp_file.endswith('.webp'):
+                unique_id = uuid.uuid4()
+                target_file_name = f"{unique_id}.png"
+                target_file_path = os.path.join(self.target_directory, target_file_name)
+                source_file_path = os.path.join(self.source_directory, webp_file)
+                self.convert_webp_to_png(source_file_path, target_file_path)
+                conversion_details.append({
+                    'original_filename': webp_file,
+                    'uuid_filename': target_file_name,
+                    'file_path': target_file_path
+                })
+                print(f'Converted {webp_file} to PNG format with UUID {unique_id}.')
+        return conversion_details
+      

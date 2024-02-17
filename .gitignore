@@ -1,3 +1,7 @@
 .replit.nix
 .replit
 discord_Midjorneyv6.zip
+.pythonlibs
+.upm
+**/response/
+**/unzipped_content/

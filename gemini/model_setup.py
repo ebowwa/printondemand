@@ -1,6 +1,6 @@
 
 """
-Setting up the Generative Model.
+Setting up the Vision Generative Model.
 """
 import google.generativeai as genai
 
@@ -8,10 +8,10 @@ def configure_genai(api_key):
     genai.configure(api_key=api_key)
 
     generation_config = {
-        "temperature": 1, #0.55
+        "temperature": 0.75, #0.55
         "top_p": 1, # 1
         "top_k": 32, # 32
-        "max_output_tokens": 90, # 4096
+        "max_output_tokens": 4096, # 4096
     }
 
     safety_settings =   [
