@@ -1,0 +1,7 @@
+python-dotenv
+resemble
+moviepy
+Pillow
+google-generativeai
+instaloader
+psycopg2
