@@ -43,7 +43,7 @@ user input key Guide
 
 ###EXAMPLE###
 Design Title:
-Unveil the Mysteries of Ancient Egypt with this Captivating Pyramid Tapestry!
+Unveil the Mysteries of Ancient Egypt with this Captivating Pyramid !
 SEO Tip: Incorporate long-tail keywords related to Egyptian history, culture, and mysticism to target niche audiences.
 
 Brand Name:
