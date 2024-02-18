@@ -1,11 +1,20 @@
 # main.py
 
 import os
+import json
 from datetime import datetime
-from vision import generate_content_from_image  # Updated to support gen_model_name
+from vision import generate_content_from_image  # Ensure it supports configuration dict
 from uuid import uuid4
 from uuid_track.uuid_database import UUIDDatabase
 from uuid_track.prompt_database import PromptDatabase  
+
+def load_generation_config(config_path='gemini/vision_config.json'):
+    with open(config_path, 'r') as file:
+        return json.load(file)["generation_config"]
+
+def read_prompt_from_markdown(file_path):
+    with open(file_path, 'r') as file:
+        return file.read().strip()
 
 def main():
     run_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -15,20 +24,16 @@ def main():
     db = UUIDDatabase(f'{dir_name}/uuid_data.csv')
     prompt_db = PromptDatabase(f'{dir_name}/prompt_data.csv')
 
+    generation_config = load_generation_config()  # Load the model configuration
     image_path = 'response/5bdf859e-ea13-4806-b807-174b7f34f9a3.png'
     markdown_file_path = '_prompts/extract_product_details.md'
-    model_name = "gemini-pro-vision"  # Specify the model name here
-
-    def read_prompt_from_markdown(file_path):
-        with open(file_path, 'r') as file:
-            return file.read().strip()
 
     prompt = read_prompt_from_markdown(markdown_file_path)
     prompt_uuid = str(uuid4())
     prompt_uuid = prompt_db.add_entry(prompt=prompt)
 
-    # Pass model_name as an argument
-    response_text = generate_content_from_image(image_path, prompt, model_name)
+    # Updated to pass the loaded generation_config
+    response_text = generate_content_from_image(image_path, prompt, generation_config)
     response_uuid = str(uuid4())
 
     if response_text == "Failed to receive a valid response after multiple attempts.":

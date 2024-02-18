@@ -1,4 +1,6 @@
+# main.py
 import os
+import json
 from datetime import datetime
 import logging
 from vision import generate_content_from_image
@@ -10,7 +12,11 @@ def read_prompt_from_markdown(file_path):
     with open(file_path, 'r') as file:
         return file.read().strip()
 
-def process_images_in_folder(folder_path, markdown_file_path, gen_model_name):
+def load_generation_config(config_path):
+    with open(config_path, 'r') as file:
+        return json.load(file)["generation_config"]
+
+def process_images_in_folder(folder_path, markdown_file_path, generation_config):
     run_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     dir_name = f"data_{run_time}"
     os.makedirs(dir_name, exist_ok=True)
@@ -27,8 +33,8 @@ def process_images_in_folder(folder_path, markdown_file_path, gen_model_name):
                 prompt_uuid = str(uuid4())
                 prompt_uuid = prompt_db.add_entry(prompt=prompt)
 
-                # Include gen_model_name when calling generate_content_from_image
-                response_text = generate_content_from_image(image_path, prompt, gen_model_name)
+                response_text = generate_content_from_image(image_path, prompt, generation_config)
+
                 if response_text == "Failed to receive a valid response after multiple attempts.":
                     logging.error(f"Failed to generate content for {image_path}")
                     continue
@@ -46,6 +52,8 @@ if __name__ == "__main__":
                         format="%(asctime)s - %(levelname)s - %(message)s")
     image_folder_path = 'response'  # Folder containing images
     markdown_file_path = '_prompts/extract_product_details.md'
-    gen_model_name = "gemini-pro-vision"  # Specify the generative model name here
+    generation_config_path = 'gemini/vision_config.json'  # Path to the generation configuration
 
-    process_images_in_folder(image_folder_path, markdown_file_path, gen_model_name)
+    generation_config = load_generation_config(generation_config_path)
+
+    process_images_in_folder(image_folder_path, markdown_file_path, generation_config)

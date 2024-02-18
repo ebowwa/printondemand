@@ -11,14 +11,14 @@ class GenerationConfig(BaseModel):
 
 class ConfigureGenAI(BaseModel):
     api_key: str
-    gen_model_name: str = Field(default=None)  # Now expects to be provided externally
+    gen_model_name: str = Field(default=None)
     generation_config: GenerationConfig
     safety_settings: list[SafetySetting]
 
-def configure_genai(api_key: str, gen_model_name: str):
+def configure_genai(api_key: str, gen_model_name: str, generation_config: dict):
     genai.configure(api_key=api_key)
 
-    generation_config = GenerationConfig()
+    gen_config = GenerationConfig(**generation_config)
     safety_settings = [
         SafetySetting(category="HARM_CATEGORY_HARASSMENT", threshold=SAFETY_THRESHOLDS["Block none"]),
         SafetySetting(category="HARM_CATEGORY_HATE_SPEECH", threshold=SAFETY_THRESHOLDS["Block none"]),
@@ -28,7 +28,7 @@ def configure_genai(api_key: str, gen_model_name: str):
 
     config = ConfigureGenAI(api_key=api_key,
                             gen_model_name=gen_model_name,  
-                            generation_config=generation_config,
+                            generation_config=gen_config,
                             safety_settings=safety_settings)
 
     model = genai.GenerativeModel(model_name=config.gen_model_name,  
