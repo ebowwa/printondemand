@@ -34,4 +34,7 @@ class ChatSession:
         return future.result()
 
     def __del__(self):
-        self.executor.shutdown(wait=True)
+      if hasattr(self, 'executor'):
+          self.executor.shutdown(wait=True)
+  
+  

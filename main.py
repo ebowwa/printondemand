@@ -48,6 +48,7 @@ def process_images_in_folder(folder_path, markdown_file_path, generation_config)
                 logging.error(f"Error processing {image_path}: {e}")
 
 # review newly created csv have embeddings review product details for each image
+# add a GPT to suggest words to add as an overlay on to the image
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, filename="process_log.txt", filemode="a",

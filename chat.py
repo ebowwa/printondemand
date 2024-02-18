@@ -1,3 +1,4 @@
+# chat.py
 import json
 from gemini.chat_session import ChatSession
 

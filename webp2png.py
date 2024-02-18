@@ -35,4 +35,10 @@ class WebpToPngConverter:
                 })
                 print(f'Converted {webp_file} to PNG format with UUID {unique_id}.')
         return conversion_details
-      
+
+
+if __name__ == "__main__":
+  source_directory = "unzipped_content/discord_Midjorneyv6"
+  target_directory = "response"
+  converter = WebpToPngConverter(source_directory, target_directory)
+  conversion_details = converter.convert_all()
