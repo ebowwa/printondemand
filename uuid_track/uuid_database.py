@@ -1,73 +1,27 @@
-from uuid import uuid4
-import csv
-import os
+# uuid_track/uuid_database.py
 
-class UUIDDatabase:
+from .csv_database import CSVDatabase
+from .uuid_generator import UUIDGenerator
+
+class UUIDDatabase(CSVDatabase):
     def __init__(self, db_file: str):
-      self.db_file = db_file
-      self.headers = ['UUID', 'File Name', 'Prompt', 'Response', 'Prompt UUID', 'Response UUID', 'Grade']
-      self._initialize_db()
-  
-    def _initialize_db(self):
-      """Initialize the database file with headers if it's new."""
-      try:
-          with open(self.db_file, 'x', newline='') as file:
-              writer = csv.DictWriter(file, fieldnames=self.headers)
-              writer.writeheader()
-      except FileExistsError:
-          # File already exists, no need to initialize
-          pass
+        headers = ['UUID', 'File Name', 'Prompt', 'Response', 'Prompt UUID', 'Response UUID', 'Grade', 'Image Path/URL']
+        super().__init__(db_file, headers)
 
-    def add_entry(self, file_name: str, prompt: str, response: str, prompt_uuid: str, response_uuid: str, grade: str = None):
-        """Add a new entry to the database."""
+    def add_entry(self, file_name: str, response: str, prompt_uuid: str, response_uuid: str, grade: str = None, image_path_url: str = '', prompt: str = None):
         entry = {
-            'UUID': str(uuid4()),
+            'UUID': UUIDGenerator.generate_uuid(),
             'File Name': file_name,
-            'Prompt': prompt,
             'Response': response,
             'Prompt UUID': prompt_uuid,
             'Response UUID': response_uuid,
-            'Grade': grade if grade is not None else ''
+            'Grade': grade if grade is not None else '',
+            'Image Path/URL': image_path_url
         }
-        with open(self.db_file, 'a', newline='') as file:
-            writer = csv.DictWriter(file, fieldnames=self.headers)
-            writer.writerow(entry)
+        if prompt is not None:
+            entry['Prompt'] = prompt  # Add prompt to the entry only if it is provided
 
-
-    def search_entries(self, search_criteria: dict) -> list:
-        """Search for entries matching the given criteria."""
-        results = []
-        with open(self.db_file, newline='') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                if all(str(row.get(k, '')).lower() == str(v).lower() for k, v in search_criteria.items()):
-                    results.append(row)
-        return results
+        super().add_entry(entry)
 
     def update_grade(self, uuid: str, grade: str):
-        """Update the grade of an entry by its UUID."""
-        updated = False
-        temp_file = self.db_file + '.tmp'
-        with open(self.db_file, 'r', newline='') as file, open(temp_file, 'w', newline='') as temp:
-            reader = csv.DictReader(file)
-            writer = csv.DictWriter(temp, fieldnames=self.headers)
-            writer.writeheader()
-            for row in reader:
-                if row['UUID'] == uuid:
-                    row['Grade'] = grade
-                    updated = True
-                writer.writerow(row)
-        os.replace(temp_file, self.db_file)
-        return updated
-  
-    def delete_entry(self, uuid: str):
-        """Delete an entry by its UUID."""
-        temp_file = self.db_file + '.tmp'
-        with open(self.db_file, newline='') as file, open(temp_file, 'w', newline='') as tempfile:
-            reader = csv.DictReader(file)
-            writer = csv.DictWriter(tempfile, fieldnames=self.headers)
-            writer.writeheader()
-            for row in reader:
-                if row['UUID'] != uuid:
-                    writer.writerow(row)
-        os.replace(temp_file, self.db_file)
+        return self.update_entry(uuid, {'Grade': grade})

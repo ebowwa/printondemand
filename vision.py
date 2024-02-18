@@ -1,11 +1,13 @@
+# Import necessary classes from response_handler.py
+# from gemini.response_handler import FinishReason, SafetyRating, GroundingPassageId, SemanticRetrieverChunk, AttributionSourceId, GroundingAttribution, CitationSource, CitationMetadata, ResponseCandidate
 import PIL.Image
 import time
 from gemini.model_setup import configure_genai
 from gemini.auth_gemini import get_api_key
 
-def generate_content_from_image(image_path, prompt, max_retries=3):
+def generate_content_from_image(image_path, prompt, gen_model_name, max_retries=3):
     api_key = get_api_key()
-    model = configure_genai(api_key)
+    model = configure_genai(api_key, gen_model_name)
     img = PIL.Image.open(image_path)
     retry_count = 0
 
@@ -34,11 +36,12 @@ if __name__ == "__main__":
             return file.read().strip()
 
     def main():
+        gen_model_name = "gemini-pro-vision"
         image_path = 'response/5bdf859e-ea13-4806-b807-174b7f34f9a3.png'
         prompt = read_prompt_from_markdown('_prompts/extract_product_details.md')
 
         try:
-            response_text = generate_content_from_image(image_path, prompt)
+            response_text = generate_content_from_image(image_path, prompt, gen_model_name)
             if response_text != "Failed to receive a valid response after multiple attempts.":
                 print(response_text)
             else:
