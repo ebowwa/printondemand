@@ -1,8 +1,17 @@
+import json
 from gemini.chat_session import ChatSession
 
 def main():
-    # Initialize the chat session with the desired model
-    chat_session = ChatSession(model_name="gemini-pro")
+    # Load the generation configuration from a JSON file
+    with open('gemini/pro_config.json', 'r') as config_file:
+        config = json.load(config_file)
+
+    # Extract the model name and generation configuration
+    model_name = config["generation_config"].pop("gen_model_name")
+    generation_config = config["generation_config"]
+
+    # Initialize the chat session with the model name and generation configuration
+    chat_session = ChatSession(model_name=model_name, generation_config=generation_config)
 
     # Start the chat session explicitly (optional, as sending a message would auto-start it)
     chat_session.start_chat()

@@ -1,14 +1,15 @@
 # gemini/chat_session.py
 from concurrent.futures import ThreadPoolExecutor
 import os
-from .pro_model_setup import configure_genai
+from .model_setup import configure_genai
 from .auth_gemini import get_api_key
 
 class ChatSession:
-    def __init__(self, model_name=None):
+    def __init__(self, model_name=None, generation_config=None):
         api_key = get_api_key()
         # If model_name is None, configure_genai will use its default
-        self.model = configure_genai(api_key=api_key, gen_model_name=model_name)
+        # If generation_config is None, configure_genai should handle default internally
+        self.model = configure_genai(api_key=api_key, gen_model_name=model_name, generation_config=generation_config)
         self.chat_session = None
         self.executor = ThreadPoolExecutor(max_workers=os.cpu_count())
 
