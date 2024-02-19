@@ -8,7 +8,7 @@ from uuid_track.prompt_database import PromptDatabase
 from gemini.chat_session import ChatSession  # Ensure this is your chat model's import path
 from read_prompt import read_prompt_from_markdown, ReadPromptRequest  # Adjusted import
 
-def load_generation_config(config_path='gemini/vision_config.json'):
+def load_generation_config(config_path='gemini/config_choice/vision_config.json'):
     with open(config_path, 'r') as file:
         return json.load(file)["generation_config"]
 
@@ -17,7 +17,7 @@ def read_prompt_from_markdown_with_validation(file_path):
     request = ReadPromptRequest(file_path=file_path)
     return read_prompt_from_markdown(request)
 
-def load_chat_config(config_path='gemini/pro_config.json'):
+def load_chat_config(config_path='gemini/config_choice/pro_config.json'):
     with open(config_path, 'r') as config_file:
         config = json.load(config_file)
     model_name = config.get("generation_config", {}).pop("gen_model_name", None)

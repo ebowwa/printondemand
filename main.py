@@ -69,8 +69,8 @@ if __name__ == "__main__":
     image_folder_path = 'response'  # Folder containing images
     vision_markdown_file_path = '_prompts/extract_product_details.md'
     chat_markdown_file_path = '_prompts/chat/v1.md'
-    generation_config_path = 'gemini/vision_config.json'  # Path to the vision generation configuration
-    chat_config_path = 'gemini/pro_config.json'  # Path to the chat configuration
+    generation_config_path = 'gemini/config_choice/vision_config.json'  # Path to the vision generation configuration
+    chat_config_path = 'gemini/config_choice/pro_config.json'  # Path to the chat configuration
 
     generation_config = load_generation_config(generation_config_path)
     model_name, chat_generation_config = load_chat_config(chat_config_path)
