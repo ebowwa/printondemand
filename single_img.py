@@ -6,34 +6,9 @@ from uuid import uuid4
 from uuid_track.uuid_database import UUIDDatabase
 from uuid_track.prompt_database import PromptDatabase
 from gemini.chat_session import ChatSession  # Ensure this is your chat model's import path
-from read_prompt import read_prompt_from_markdown, ReadPromptRequest  # Adjusted import
-
-def load_generation_config(config_path='gemini/config_choice/vision_config.json'):
-    with open(config_path, 'r') as file:
-        return json.load(file)["generation_config"]
-
-# Adjusted the function to use Pydantic for input validation
-def read_prompt_from_markdown_with_validation(file_path):
-    request = ReadPromptRequest(file_path=file_path)
-    return read_prompt_from_markdown(request)
-
-def load_chat_config(config_path='gemini/config_choice/pro_config.json'):
-    with open(config_path, 'r') as config_file:
-        config = json.load(config_file)
-    model_name = config.get("generation_config", {}).pop("gen_model_name", None)
-    chat_generation_config = config.get("generation_config", {})
-    return model_name, chat_generation_config
-
-def initialize_directories():
-    run_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    dir_name = f"data_{run_time}"
-    os.makedirs(dir_name, exist_ok=True)
-    return dir_name
-
-def initialize_databases(dir_name):
-    db = UUIDDatabase(f'{dir_name}/uuid_data.csv')
-    prompt_db = PromptDatabase(f'{dir_name}/prompt_data.csv')
-    return db, prompt_db
+from utils.read_prompt import read_prompt_from_markdown, ReadPromptRequest, read_prompt_from_markdown_with_validation  # Adjusted import
+from utils.config_loader import load_generation_config, load_chat_config
+from utils.initializer import initialize_directories, initialize_databases
 
 def process_image_and_chat(image_path, vision_prompt, chat_prompt, generation_config, chat_generation_config, dir_name):
     # Vision Model Prompt
@@ -68,7 +43,7 @@ generation_config = load_generation_config()
 model_name, chat_generation_config = load_chat_config()
 
 # Specify image and markdown file paths
-image_path = 'response/2ae45190-8dfa-47b1-a846-d3bb643d5737.png'
+image_path = 'response/00c90244-64ea-49fa-b26b-63394a92a088.png'
 vision_markdown_file_path = '_prompts/extract_product_details.md'
 chat_markdown_file_path = '_prompts/chat/v1.md'
 

@@ -1,7 +1,8 @@
 # utils/img_utils.py
-
-from PIL import Image
+# PIL wrapper
+from PIL import Image, ImageDraw, ImageFont
 import io, uuid, os
+
 
 def open_image(image_path):
     """Open an image and return the PIL.Image object."""
@@ -32,7 +33,21 @@ def generate_unique_filename(extension='.png'):
 def get_image_size_in_mb(image):
     """Calculate the image size in megabytes."""
     img_byte_arr = io.BytesIO()
-    image.save(img_byte_arr, format=image.format)
+    # If the image format is unset or unknown, default to PNG.
+    img_format = image.format if image.format else 'PNG'
+    image.save(img_byte_arr, format=img_format)
     size_mb = len(img_byte_arr.getvalue()) / (1024 * 1024)
     return size_mb
 
+
+def simple_text_image():
+    image = Image.new('RGBA', (200, 100), (255, 255, 255, 0))
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.truetype("utils/fonts/SouthParkSmilieVersion-YVVO.ttf", 24)  # Adjust path as necessary
+    draw.text((10, 10), "Test Text", fill="black", font=font)
+    image.save("test_image.png")
+
+if __name__ == "__main__":
+    simple_text_image()
+
+  

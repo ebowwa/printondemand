@@ -2178,6 +2178,16 @@ socks = ["pysocks (>=1.5.6,!=1.5.7,<2.0)"]
 zstd = ["zstandard (>=0.18.0)"]
 
 [[package]]
+name = "utils"
+version = "1.0.2"
+description = "A grab-bag of utility functions and objects"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "utils-1.0.2.tar.gz", hash = "sha256:f4d5157e27e9d434006b5b52a1ec951a34e53e7ecaa145d43a153ec452eb5d9e"},
+]
+
+[[package]]
 name = "uvicorn"
 version = "0.27.1"
 description = "The lightning-fast ASGI server."
@@ -2396,4 +2406,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10.0,<3.12"
-content-hash = "fc71578f52d382e142ed5ceedc63fe43f0486029d81a6a3eefeb4559552501d4"
+content-hash = "ddcf86bf1c68e8a3c6940a3f536083b20c407ac13fd109b665cf1a684dab2107"

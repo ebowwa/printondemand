@@ -4,12 +4,10 @@
 
 
 
-# add embeddings to run a k nearest neighbor search for the highest quality most likely to attract interest product details
-# add LLM oversight to responses with embeddings
-# add character counting of product details
-# 
-Upscale/images:
-https://chat.openai.com/share/9046bd88-87d8-44ae-8b0b-55aa98432323
+add embeddings to run a k nearest neighbor search for the highest quality most likely to attract interest product details
+add LLM oversight to responses with embeddings
+add character counting of product details
+
 
 Pinteret automation:
 [link]

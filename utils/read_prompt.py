@@ -1,4 +1,4 @@
-# read_prompt.py
+# utils/read_prompt.py
 from pydantic import BaseModel, FilePath
 from typing import Any
 
@@ -17,3 +17,7 @@ def read_prompt_from_markdown(request: ReadPromptRequest) -> str:
     """
     with open(request.file_path, 'r') as file:
         return file.read().strip()
+
+def read_prompt_from_markdown_with_validation(file_path):
+    request = ReadPromptRequest(file_path=file_path)
+    return read_prompt_from_markdown(request)
