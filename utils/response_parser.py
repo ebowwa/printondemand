@@ -9,7 +9,7 @@ class SectionCounts(BaseModel):
     Product_Description: int = 0
 
 def parse_response_and_count_characters(response_text: str) -> Dict[str, int]:
-    sections = ["Design Title:", "Brand Name:", "Product Features:", "Feature Bullet 2:", "Product Description:"]
+    sections = ["Design Title:", "Brand Name:", "Product Features:","Feature Bullet 1:", "Feature Bullet 2:", "Product Description:"]
     seo_exclusions = ["SEO Tip:", "SEO Strategy:"]  
     section_counts = SectionCounts()  # Using Pydantic model for initialization
 

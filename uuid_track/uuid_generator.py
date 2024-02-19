@@ -1,3 +1,4 @@
+# uuid_track/uuid_generator.py
 from uuid import uuid4
 
 class UUIDGenerator:

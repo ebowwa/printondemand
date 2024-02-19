@@ -47,5 +47,5 @@ if __name__ == "__main__":
 
 
 
-# python unzip_script.py --file_path your_zip_file.zip
-# i.e. python cli-unzip.py --file_path discord_Midjorneyv6.zip
+# python utils/unzip_script.py --file_path your_zip_file.zip
+# i.e. python utils/cli-unzip.py --file_path discord_Midjorneyv6.zip

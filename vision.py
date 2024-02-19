@@ -1,9 +1,9 @@
 # vision.py
 import json
-import PIL.Image
 import time
 from gemini.model_setup import configure_genai
 from gemini.auth_gemini import get_api_key
+from utils.img_utils import open_image  # Import the centralized image handling utility
 
 def generate_content_from_image(image_path, prompt, generation_config, max_retries=3):
     api_key = get_api_key()
@@ -14,7 +14,7 @@ def generate_content_from_image(image_path, prompt, generation_config, max_retri
     # Pass a copy of generation_config without the gen_model_name to configure_genai
     config_without_model_name = {key: val for key, val in generation_config.items() if key != 'gen_model_name'}
     model = configure_genai(api_key, gen_model_name, config_without_model_name)
-    img = PIL.Image.open(image_path)
+    img = open_image(image_path)  # Use centralized utility function to open the image
     retry_count = 0
 
     while retry_count < max_retries:
@@ -44,7 +44,7 @@ if __name__ == "__main__":
 
     def main():
         generation_config = load_generation_config('gemini/vision_config.json')
-        image_path = 'response/5bdf859e-ea13-4806-b807-174b7f34f9a3.png'
+        image_path = 'response/00c90244-64ea-49fa-b26b-63394a92a088.png'
         prompt = read_prompt_from_markdown('_prompts/extract_product_details.md')
 
         try:

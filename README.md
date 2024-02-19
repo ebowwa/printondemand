@@ -8,3 +8,14 @@
 # add LLM oversight to responses with embeddings
 # add character counting of product details
 # 
+Upscale/images:
+https://chat.openai.com/share/9046bd88-87d8-44ae-8b0b-55aa98432323
+
+Pinteret automation:
+[link]
+
+instagram automation:
+
+multion:
+
+
