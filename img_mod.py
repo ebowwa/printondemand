@@ -1,6 +1,6 @@
 # img_mod.py
 # Modifies PNG files, expanding size to 4500x5400 and calculates the MB size of the image resized
-
+# after png is sent to Gemini, due to size expansion
 import os
 from utils.resize import resize_image_proportionately
 from utils.img_utils import get_image_size_in_mb

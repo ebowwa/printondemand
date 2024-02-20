@@ -15,6 +15,16 @@ class PromptDatabase:
                 writer = csv.DictWriter(file, fieldnames=self.headers)
                 writer.writeheader()
 
+    def search_entries(self, search_criteria: dict) -> list:
+        results = []
+        with open(self.db_file, newline='') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if all(str(row.get(k, '')).lower() == str(v).lower() for k, v in search_criteria.items()):
+                    results.append(row)
+        return results
+
+
     def find_prompt_uuid(self, prompt: str, prompt_role: str):  # Added prompt_role parameter
         with open(self.db_file, newline='') as file:
             reader = csv.DictReader(file)
