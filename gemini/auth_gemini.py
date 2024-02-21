@@ -6,8 +6,7 @@ from pydantic import BaseModel, Field
 load_dotenv()
 
 class Settings(BaseModel):
-   gemini_api_key: str = Field(default="AIzaSyDYlbh6B6dg-ms8e1KwAfjnRYuFT9FnI6w", env="GEMINI_API_KEY")
-#   gemini_api_key: str = Field(default="YOUR_API_KEY", env="GEMINI_API_KEY")
+   gemini_api_key: str = Field(default="YOUR_API_KEY", env="GEMINI_API_KEY")
 
 def get_api_key() -> str:
     settings = Settings()
