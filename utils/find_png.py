@@ -1,5 +1,5 @@
 #  utils/find_png.py
-from .file_utils import list_files, join_paths, create_directory
+from .file_utils import list_files, join_paths
 
 def find_uuid_png_files(directory, uuid):
     """Find and return a list of PNG files containing the specific UUID in their filenames."""

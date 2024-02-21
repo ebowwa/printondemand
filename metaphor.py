@@ -1,5 +1,6 @@
-# add function to return png file location aswell 
 import pandas as pd
+import glob
+import os
 
 class FlexibleCSVDatabase:
     def __init__(self, db_file: str):
@@ -11,39 +12,36 @@ class FlexibleCSVDatabase:
             data = data[data[key].astype(str).str.contains(value, case=False, na=False)]
         return data
 
-def get_row_info_by_filename(db, file_name):
-    """Retrieve all information for a specific row based on the file name."""
-    search_criteria = {'File Name': file_name}
-    result = db.search_entries(search_criteria)
-    return result
+def find_uuid_png_files(directory, uuid):
+    uuid_png_files = []
+    for root, dirs, files in os.walk(directory):
+        for filename in files:
+            if filename.endswith('.png') and uuid in filename:
+                uuid_png_files.append(os.path.join(root, filename))
+    return uuid_png_files
 
-def get_prompt_info_by_uuid(prompt_db, uuids):
-    """Given UUIDs, find and retrieve prompt details from the prompt database."""
-    results = []
-    for uuid in uuids:
-        result = prompt_db.search_entries({'Prompt UUID': uuid})
-        results.append(result)
-    return pd.concat(results) if results else pd.DataFrame()
-
-if __name__ == "__main__":
-    # Example usage
-    uuid_db_path = 'data_2024-02-20_23-48-53/uuid_data.csv'  # Adjust path accordingly
-    prompt_db_path = 'data_2024-02-20_23-48-53/prompt_data.csv'  # Adjust path accordingly
-
+def execute_search(uuid_db_path, prompt_db_path, directory, file_name):
     uuid_db = FlexibleCSVDatabase(uuid_db_path)
     prompt_db = FlexibleCSVDatabase(prompt_db_path)
 
-    # Search for a specific file's information
-    file_name = 'response/00c90244-64ea-49fa-b26b-63394a92a088.png'
-    row_info = get_row_info_by_filename(uuid_db, file_name)
-    print("Row Information:", row_info)
-
-    # Assuming row_info contains 'Vision Prompt UUID' and 'Chat Prompt UUID', extract them
+    row_info = uuid_db.search_entries({'File Name': file_name})
     if not row_info.empty:
-        vision_prompt_uuid = row_info.iloc[0]['Vision Prompt UUID']
-        chat_prompt_uuid = row_info.iloc[0]['Chat Prompt UUID']
+        print("Row Information:\n", row_info.to_string(index=False, header=True))
 
-        # Retrieve prompt information using UUIDs
-        prompt_uuids = [vision_prompt_uuid, chat_prompt_uuid]
-        prompt_info = get_prompt_info_by_uuid(prompt_db, prompt_uuids)
-        print("Prompt Information:", prompt_info)
+        # Extract the UUID from the file_name for PNG search
+        file_uuid = file_name.split('.')[0]  # Assuming UUID is the filename without the extension
+
+        # Find PNG files associated with the UUID extracted from file_name
+        png_files = find_uuid_png_files(directory, file_uuid)
+        print("\nPNG Files:", png_files if png_files else "No PNG files found.")
+    else:
+        print("No row information found for the given file name.")
+
+if __name__ == "__main__":
+    # Adjust these paths and variables according to your setup
+    uuid_db_path = 'data_2024-02-20_23-48-53/uuid_data.csv'
+    prompt_db_path = 'data_2024-02-20_23-48-53/prompt_data.csv'
+    directory = 'response'
+    file_name = '00c90244-64ea-49fa-b26b-63394a92a088.png'
+
+    execute_search(uuid_db_path, prompt_db_path, directory, file_name)
